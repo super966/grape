@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Random;
 
 /**
  * @author LSY
@@ -12,6 +13,7 @@ import java.awt.event.KeyListener;
  **/
 public class Test extends JPanel implements KeyListener {
 
+    static Color[][] Scene = new Color[800][600];
     int x=40,y=40;
     Test(){
         JFrame frame = new JFrame();
@@ -27,18 +29,7 @@ public class Test extends JPanel implements KeyListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
-    public static void main(String[] args) {
-//        new Test();
-        Vector4d camright = new Vector4d(1,0,0,1);
-        Vector4d camup = new Vector4d(0,1,0,1);
-        Vector4d cameraP = new Vector4d(-2,0,-2,1);
-        Matrix m = new Matrix().projectTransform(60,1,1,5);
 
-        for (int i = 0; i < 16; i++) {
-            System.out.println(m.ele[i]);
-        }
-
-    }
 
     public void moveleft(){
         this.x--;
@@ -59,8 +50,12 @@ public class Test extends JPanel implements KeyListener {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.red);
-        g2d.fillOval(x, y, 20, 20);
+        for (int i = 0; i < Scene.length; i++) {
+            for (int j = 0; j < Scene[i].length; j++) {
+                g2d.setColor(Scene[i][j]);
+                g2d.drawLine(i,j,i,j);
+            }
+        }
         repaint();
     }
 
@@ -91,4 +86,14 @@ public class Test extends JPanel implements KeyListener {
     public void keyReleased(KeyEvent e) {
 
     }
+    public static void main(String[] args) {
+        new Test();
+        Random r = new Random(35);
+        for (int i = 0; i < Scene.length; i++) {
+            for (int j = 0; j < Scene[i].length; j++) {
+                Scene[i][j] = new Color(r.nextInt(255),r.nextInt(255),r.nextInt(255));
+            }
+        }
+    }
 }
+

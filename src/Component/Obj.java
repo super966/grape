@@ -21,22 +21,33 @@ public class Obj extends JPanel implements KeyListener {
     private List<Triangle> ltri = new ArrayList<>();
     private Matrix worldmatrix;
     private JPanel jPanel = new JPanel();
+    private Color[][] Frame = new Color[1000][800];
+    private double[][] Z_Buffer = new double[1000][800];
+
+    public Obj(){
+        for (int i = 0; i < Frame.length; i++) {
+            for (int j = 0; j <Frame[i].length; j++) {
+                Frame[i][j] = Color.white;
+                Z_Buffer[i][j] = Double.MAX_VALUE;
+            }
+        }
+    }
 
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-
+//
         for (int i = 0; i < ltri.size(); i++) {
 
             Camera c = Scene.getInstance().getCamera();
             System.out.println(c);
             Triangle t = new Triangle(ltri.get(i));
-            Matrix rotateX = new Matrix().rotateX(0.01);
-//            Matrix rotateY = new Matrix().rotateY(0.01);
+            Matrix rotateX = new Matrix().rotateX(0.03);
+            Matrix rotateY = new Matrix().rotateY(0.03);
             worldmatrix  = worldmatrix.mul(rotateX);
-//            worldmatrix = worldmatrix.mul(rotateY);
+            worldmatrix = worldmatrix.mul(rotateY);
             List<Triangle>  temp = t.draw(worldmatrix, c);
             for (int i1 = 0; i1 < temp.size(); i1++) {
 
@@ -53,7 +64,7 @@ public class Obj extends JPanel implements KeyListener {
                 int y3 = (int) three.getPos().getY();
 
                 if ((x1 == x2 && x1 == x3) || (y1 == y2 && y1 == y3))
-                    repaint();
+                    continue;
 
                 if (one.getPos().getY() > two.getPos().getY()) {
                     Vertex swap = two;
@@ -143,10 +154,22 @@ public class Obj extends JPanel implements KeyListener {
 
                 }
             }
-
-
         }
+        for (int i = 0; i < Frame.length; i++) {
+            for (int j = 0; j < Frame[i].length; j++) {
+                g2d.setColor(Frame[i][j]);
+                g2d.drawLine(i,j,i,j);
+            }
+        }
+
+        removeAll();
         repaint();
+        for (int i = 0; i < Frame.length; i++) {
+            for (int j = 0; j <Frame[i].length; j++) {
+                Frame[i][j] = Color.white;
+                Z_Buffer[i][j] = Double.MAX_VALUE;
+            }
+        }
     }
 
     private void topTriangle(Vertex one, Vertex two, Vertex three, Graphics2D g2d) {
@@ -228,7 +251,7 @@ public class Obj extends JPanel implements KeyListener {
             double ur = one.getTexture().getU() + k * (two.getTexture().getU()  - one.getTexture().getU());
             double vr = one.getTexture().getV() + k * (two.getTexture().getV()  - one.getTexture().getV());
 
-            line(xs,xe,y,zl,zr,ul,ur,vl,vr,g2d);
+            line(xs,xe,y,rs,gs,bs,re,ge,be,zl,zr,ul,ur,vl,vr,g2d);
 
             xs += xleft;
             xe += xright;
@@ -328,8 +351,8 @@ public class Obj extends JPanel implements KeyListener {
             double ur = two.getTexture().getU() + k * (three.getTexture().getU()  - two.getTexture().getU());
             double vr = two.getTexture().getV() + k * (three.getTexture().getV()  - two.getTexture().getV());
 
-//            line(xs,xe,y,rs,gs,bs,re,ge,be,zl,zr,ul,ur,vl,vr,g2d);
-            line(xs,xe,y,zl,zr,ul,ur,vl,vr,g2d);
+            line(xs,xe,y,rs,gs,bs,re,ge,be,zl,zr,ul,ur,vl,vr,g2d);
+//            line(xs,xe,y,zl,zr,ul,ur,vl,vr,g2d);
 
             xs += xleft;
             xe += xright;
@@ -342,16 +365,16 @@ public class Obj extends JPanel implements KeyListener {
         }
     }
 
-    private void line(double xs, double xe, double y, double zl, double zr, double ul, double ur, double vl, double vr, Graphics2D g2d) {
+    private void line(double xs, double xe, double y,double rs, double gs, double bs, double re, double ge, double be, double zl, double zr, double ul, double ur, double vl, double vr, Graphics2D g2d) {
         double deltaR = 0.0;
         double deltaG = 0.0;
         double deltaB = 0.0;
 
-//        if(Math.abs(xe - xs) > 0.0001f){
-//            deltaR = (re - rs) * 1.0 / (xe - xs);
-//            deltaG = (ge - gs) * 1.0 / (xe - xs);
-//            deltaB = (be - bs) * 1.0 / (xe - xs);
-//        }
+        if(Math.abs(xe - xs) > 0.0001f){
+            deltaR = (re - rs) * 1.0 / (xe - xs);
+            deltaG = (ge - gs) * 1.0 / (xe - xs);
+            deltaB = (be - bs) * 1.0 / (xe - xs);
+        }
         int textheight = Scene.getInstance().getTexture().getHeight();
         int textwidth = Scene.getInstance().getTexture().getWidth();
         double x = 0;
@@ -379,22 +402,30 @@ public class Obj extends JPanel implements KeyListener {
                 System.out.println(e);
             }
 
-//            int red = (int)   (rs * (c>>16 & 0x0000ff) / 255) ;
-//            int green = (int)  (gs * (c>>8  & 0x0000ff) / 255);
-//            int blue = (int)   (bs * (c     & 0x0000ff) / 255);
-
-//            red  = red < 0? 0 : Math.min(red, 255);
-//            blue  = blue < 0? 0 : Math.min(blue, 255);
-//            green  = green < 0? 0 : Math.min(green, 255);
+            int red = (int)   (rs * (c>>16 & 0x0000ff) / 255) ;
+            int green = (int)  (gs * (c>>8  & 0x0000ff) / 255);
+            int blue = (int)   (bs * (c     & 0x0000ff) / 255);
 //
-////            System.out.println(red + " " + blue + " " + green);
-//            Color color = new Color(red,green,blue);
+            red  = red < 0? 0 : Math.min(red, 255);
+            blue  = blue < 0? 0 : Math.min(blue, 255);
+            green  = green < 0? 0 : Math.min(green, 255);
 
-            g2d.setColor(getColor(c));
-            g2d.drawLine((int) x, (int) y, (int) x, (int) y);
-//            rs += deltaR;
-//            bs += deltaB;
-//            gs += deltaG;
+////            System.out.println(red + " " + blue + " " + green);
+            Color color = new Color(red,green,blue);
+            int xn  = x < 0? 0 : (int) Math.min(x, 999);
+            y  = y < 0? 0 : Math.min(y, 799);
+            if(Z_Buffer[xn][(int) y] > new_z){
+                Z_Buffer[xn][(int) y] = new_z;
+                Frame[xn][(int) y]= color;
+            }
+
+
+
+//            g2d.setColor(getColor(c));
+//            g2d.drawLine((int) x, (int) y, (int) x, (int) y);
+            rs += deltaR;
+            bs += deltaB;
+            gs += deltaG;
         }
     }
 

@@ -1128,7 +1128,7 @@ public class Triangle{
             Vector4d N1 = triangle.point[1].getPos().minus(triangle.point[0].getPos());
             Vector4d N2 = triangle.point[2].getPos().minus(triangle.point[0].getPos());
             Vector4d frontNormal = N1.crossMul(N2).Normalize();
-            if(frontNormal.dot(camDir) < 0) continue;
+//            if(frontNormal.dot(camDir) < 0) continue;
 
             for (Vertex vertex : triangle.point) {
                 calpos(vertex);
