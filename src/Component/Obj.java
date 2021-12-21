@@ -23,6 +23,8 @@ public class Obj extends JPanel implements KeyListener {
     private JPanel jPanel = new JPanel();
     private Color[][] Frame = new Color[1000][800];
     private double[][] Z_Buffer = new double[1000][800];
+    private boolean LINE = false;
+
 
     public Obj(){
         for (int i = 0; i < Frame.length; i++) {
@@ -48,7 +50,7 @@ public class Obj extends JPanel implements KeyListener {
             Matrix rotateY = new Matrix().rotateY(0.03);
             worldmatrix  = worldmatrix.mul(rotateX);
             worldmatrix = worldmatrix.mul(rotateY);
-            List<Triangle>  temp = t.draw(worldmatrix, c);
+            List<Triangle>  temp = t.draw(worldmatrix, c,LINE);
             for (int i1 = 0; i1 < temp.size(); i1++) {
 
 
@@ -81,93 +83,99 @@ public class Obj extends JPanel implements KeyListener {
                     two = three;
                     three = swap;
                 }
-                x1 = (int) one.getPos().getX();
-                y1 = (int) one.getPos().getY();
-                x2 = (int) two.getPos().getX();
-                y2 = (int) two.getPos().getY();
-                x3 = (int) three.getPos().getX();
-                y3 = (int) three.getPos().getY();
+//                x1 = (int) one.getPos().getX();
+//                y1 = (int) one.getPos().getY();
+//                x2 = (int) two.getPos().getX();
+//                y2 = (int) two.getPos().getY();
+//                x3 = (int) three.getPos().getX();
+//                y3 = (int) three.getPos().getY();
 
-//            Vector2d oneV2 = new Vector2d(one.getPos().getX(), one.getPos().getY());
-//                Vector2d twoV2 = new Vector2d(two.getPos().getX(), two.getPos().getY());
-//                Vector2d threeV2 = new Vector2d(three.getPos().getX(), three.getPos().getY());
-//
-//
-//
-////                dda(oneV2,temv,g2d,one.getColor(),tempVer.getColor());
-//                dda(oneV2,twoV2,g2d,one.getColor(),two.getColor());
-//                dda(twoV2,threeV2,g2d,two.getColor(),three.getColor());
-//
-//                dda(oneV2,threeV2,g2d,one.getColor(),three.getColor());
+                if(LINE){
+                    Vector2d oneV2 = new Vector2d(one.getPos().getX(), one.getPos().getY());
+                    Vector2d twoV2 = new Vector2d(two.getPos().getX(), two.getPos().getY());
+                    Vector2d threeV2 = new Vector2d(three.getPos().getX(), three.getPos().getY());
 
-                if (Math.abs(one.getPos().getY() - two.getPos().getY()) < 0.00001f) {
-                    downTriangle(one, two, three, g2d);
-                } else if (Math.abs(two.getPos().getY() - three.getPos().getY()) < 0.00001f) {
-//
-                    topTriangle(one, two, three, g2d);
-                } else {
-                    int tempVer_x = (int) (one.getPos().getX() + 0.5 + 1.0 * (two.getPos().getY() - one.getPos().getY()) *
-                            (three.getPos().getX() - one.getPos().getX()) / (three.getPos().getY() - one.getPos().getY()));
-                    int tempVer_r = (int) (one.getColor().getRed() + 1.0 * (two.getPos().getY() - one.getPos().getY()) *
-                            (three.getColor().getRed() - one.getColor().getRed()) / (three.getPos().getY() - one.getPos().getY()));
-                    int tempVer_g = (int) (one.getColor().getGreen() + 1.0 * (two.getPos().getY() - one.getPos().getY()) *
-                            (three.getColor().getGreen() - one.getColor().getGreen()) / (three.getPos().getY() - one.getPos().getY()));
-                    int tempVer_b = (int) (one.getColor().getBlue() + 1.0 * (two.getPos().getY() - one.getPos().getY()) *
-                            (three.getColor().getBlue() - one.getColor().getBlue()) / (three.getPos().getY() - one.getPos().getY()));
-
-                    tempVer_r = tempVer_r < 0 ? 0 : Math.min(tempVer_r, 255);
-                    tempVer_b = tempVer_b < 0 ? 0 : Math.min(tempVer_b, 255);
-                    tempVer_g = tempVer_g < 0 ? 0 : Math.min(tempVer_g, 255);
-
-                    Color tempVer_c = new Color(tempVer_r, tempVer_g, tempVer_b);
-                    Vertex tempVer = new Vertex(two);
-                    tempVer.setTexture(new TextureCoord(two.getTexture().getU(), two.getTexture().getV()));
-                    tempVer.setNormal(new Vector4d(two.getNormal()));
-                    tempVer.setMaterial(new Material(two.getMaterial().getKa(), two.getMaterial().getKd(), two.getMaterial().getKs(), two.getMaterial().getN()));
-                    tempVer.setPos(new Vector4d(0, 0, 0, 0));
-                    tempVer.setZ_deep(two.getZ_deep());
-                    tempVer.getPos().setX(tempVer_x);
-                    tempVer.getPos().setY(two.getPos().getY());
-                    tempVer.getPos().setZ(two.getPos().getZ());
-                    tempVer.getPos().setW(two.getPos().getW());
-                    tempVer.setColor(tempVer_c);
-
-                    double s = (two.getPos().getY() - one.getPos().getY()) / (three.getPos().getY() - one.getPos().getY());
-                    double z1 = one.getZ_deep();
-                    double z3 = three.getZ_deep();
-                    double zt = 0;
-                    double k = s;
-                    if (z1 != 0 && z3 != 0) zt = 1 / z1 + s * (1 / z3 - 1 / z1);
-                    if (zt != 0) zt = 1 / zt;
-                    if (z1 != z3) k = (zt - z1) / (z3 - z1);
-
-                    tempVer.setZ_deep(zt);
-
-                    try {
-                        tempVer.getTexture().setU(one.getTexture().getU() + k * (three.getTexture().getU() - one.getTexture().getU()));
-                        tempVer.getTexture().setV(one.getTexture().getV() + k * (three.getTexture().getV() - one.getTexture().getV()));
-                    } catch (Exception e) {
-                        System.out.println(e);
+                    dda(oneV2,twoV2,g2d,one.getColor(),two.getColor());
+                    dda(twoV2,threeV2,g2d,two.getColor(),three.getColor());
+                    dda(oneV2,threeV2,g2d,one.getColor(),three.getColor());
+                }
+                else{
+                    if (Math.abs(one.getPos().getY() - two.getPos().getY()) < 0.00001f) {
+                        downTriangle(one, two, three, g2d);
                     }
-                    topTriangle(one, tempVer, two, g2d);
-                    downTriangle(tempVer, two, three, g2d);
+                    else if (Math.abs(two.getPos().getY() - three.getPos().getY()) < 0.00001f) {
+                        topTriangle(one, two, three, g2d);
+                    }
+                    else {
+                        int tempVer_x = (int) (one.getPos().getX() + 0.5 + 1.0 * (two.getPos().getY() - one.getPos().getY()) *
+                                (three.getPos().getX() - one.getPos().getX()) / (three.getPos().getY() - one.getPos().getY()));
+                        int tempVer_r = (int) (one.getColor().getRed() + 1.0 * (two.getPos().getY() - one.getPos().getY()) *
+                                (three.getColor().getRed() - one.getColor().getRed()) / (three.getPos().getY() - one.getPos().getY()));
+                        int tempVer_g = (int) (one.getColor().getGreen() + 1.0 * (two.getPos().getY() - one.getPos().getY()) *
+                                (three.getColor().getGreen() - one.getColor().getGreen()) / (three.getPos().getY() - one.getPos().getY()));
+                        int tempVer_b = (int) (one.getColor().getBlue() + 1.0 * (two.getPos().getY() - one.getPos().getY()) *
+                                (three.getColor().getBlue() - one.getColor().getBlue()) / (three.getPos().getY() - one.getPos().getY()));
 
+                        tempVer_r = tempVer_r < 0 ? 0 : Math.min(tempVer_r, 255);
+                        tempVer_b = tempVer_b < 0 ? 0 : Math.min(tempVer_b, 255);
+                        tempVer_g = tempVer_g < 0 ? 0 : Math.min(tempVer_g, 255);
+
+                        Color tempVer_c = new Color(tempVer_r, tempVer_g, tempVer_b);
+                        Vertex tempVer = new Vertex(two);
+                        tempVer.setTexture(new TextureCoord(two.getTexture().getU(), two.getTexture().getV()));
+                        tempVer.setNormal(new Vector4d(two.getNormal()));
+                        tempVer.setMaterial(new Material(two.getMaterial().getKa(), two.getMaterial().getKd(), two.getMaterial().getKs(), two.getMaterial().getN()));
+                        tempVer.setPos(new Vector4d(0, 0, 0, 0));
+                        tempVer.setZ_deep(two.getZ_deep());
+                        tempVer.getPos().setX(tempVer_x);
+                        tempVer.getPos().setY(two.getPos().getY());
+                        tempVer.getPos().setZ(two.getPos().getZ());
+                        tempVer.getPos().setW(two.getPos().getW());
+                        tempVer.setColor(tempVer_c);
+
+                        double s = (two.getPos().getY() - one.getPos().getY()) / (three.getPos().getY() - one.getPos().getY());
+                        double z1 = one.getZ_deep();
+                        double z3 = three.getZ_deep();
+                        double zt = 0;
+                        double k = s;
+                        if (z1 != 0 && z3 != 0) zt = 1 / z1 + s * (1 / z3 - 1 / z1);
+                        if (zt != 0) zt = 1 / zt;
+                        if (z1 != z3) k = (zt - z1) / (z3 - z1);
+
+                        tempVer.setZ_deep(zt);
+
+                        try {
+                            tempVer.getTexture().setU(one.getTexture().getU() + k * (three.getTexture().getU() - one.getTexture().getU()));
+                            tempVer.getTexture().setV(one.getTexture().getV() + k * (three.getTexture().getV() - one.getTexture().getV()));
+                        } catch (Exception e) {
+                            System.out.println(e);
+                        }
+                        topTriangle(one, tempVer, two, g2d);
+                        downTriangle(tempVer, two, three, g2d);
+                    }
+
+                }
+
+            }
+        }
+        if(LINE==false){
+            for (int i = 0; i < Frame.length; i++) {
+                for (int j = 0; j < Frame[i].length; j++) {
+                    g2d.setColor(Frame[i][j]);
+                    g2d.drawLine(i,j,i,j);
                 }
             }
         }
-        for (int i = 0; i < Frame.length; i++) {
-            for (int j = 0; j < Frame[i].length; j++) {
-                g2d.setColor(Frame[i][j]);
-                g2d.drawLine(i,j,i,j);
-            }
-        }
+
 
         removeAll();
         repaint();
-        for (int i = 0; i < Frame.length; i++) {
-            for (int j = 0; j <Frame[i].length; j++) {
-                Frame[i][j] = Color.white;
-                Z_Buffer[i][j] = Double.MAX_VALUE;
+        if(LINE == false){
+            for (int i = 0; i < Frame.length; i++) {
+                for (int j = 0; j <Frame[i].length; j++) {
+                    Frame[i][j] = Color.white;
+                    Z_Buffer[i][j] = Double.MAX_VALUE;
+                }
             }
         }
     }
@@ -201,14 +209,18 @@ public class Obj extends JPanel implements KeyListener {
         double y1 = one.getPos().getY();
         double y2 = two.getPos().getY();
         double y3 = three.getPos().getY();
-        Color c1 = one.getColor();
-        Color c2 = two.getColor();
-        Color c3 = three.getColor();
-//        int height = Scene.getInstance().getTexture().getHeight();
-//        int width = Scene.getInstance().getTexture().getWidth();
-//        Color c1 = getColor(Scene.getInstance().getTexture().getRGB((int) one.getTexture().getU() * (width-1),(int) one.getTexture().getV()*(height-1)));
-//        Color c2 = getColor(Scene.getInstance().getTexture().getRGB((int) two.getTexture().getU() * (width-1),(int) two.getTexture().getV()*(height-1)));
-//        Color c3 = getColor(Scene.getInstance().getTexture().getRGB((int) three.getTexture().getU() * (width-1),(int) three.getTexture().getV()*(height-1)));
+        Color c1,c2,c3;
+        if(LINE){
+            c1 = one.getColor();
+            c2 = two.getColor();
+            c3 = three.getColor();
+        }else{
+            int height = Scene.getInstance().getTexture().getHeight();
+            int width = Scene.getInstance().getTexture().getWidth();
+            c1 = getColor(Scene.getInstance().getTexture().getRGB((int) one.getTexture().getU() * (width-1),(int) one.getTexture().getV()*(height-1)));
+            c2 = getColor(Scene.getInstance().getTexture().getRGB((int) two.getTexture().getU() * (width-1),(int) two.getTexture().getV()*(height-1)));
+            c3 = getColor(Scene.getInstance().getTexture().getRGB((int) three.getTexture().getU() * (width-1),(int) three.getTexture().getV()*(height-1)));
+        }
 
 
         double xleft = (x3-x1)/(y3-y1);
@@ -306,16 +318,18 @@ public class Obj extends JPanel implements KeyListener {
         double y2 = two.getPos().getY();
         double y3 = three.getPos().getY();
 
-        Color c1 = one.getColor();
-        Color c2 = two.getColor();
-        Color c3 = three.getColor();
-
-//        int height = Scene.getInstance().getTexture().getHeight();
-//        int width = Scene.getInstance().getTexture().getWidth();
-//        Color c1 = getColor(Scene.getInstance().getTexture().getRGB((int) one.getTexture().getU() * (width-1),(int) one.getTexture().getV()*(height-1)));
-//        Color c2 = getColor(Scene.getInstance().getTexture().getRGB((int) two.getTexture().getU() * (width-1),(int) two.getTexture().getV()*(height-1)));
-//        Color c3 = getColor(Scene.getInstance().getTexture().getRGB((int) three.getTexture().getU() * (width-1),(int) three.getTexture().getV()*(height-1)));
-
+        Color c1,c2,c3;
+        if(LINE){
+            c1 = one.getColor();
+            c2 = two.getColor();
+            c3 = three.getColor();
+        }else{
+            int height = Scene.getInstance().getTexture().getHeight();
+            int width = Scene.getInstance().getTexture().getWidth();
+            c1 = getColor(Scene.getInstance().getTexture().getRGB((int) one.getTexture().getU() * (width-1),(int) one.getTexture().getV()*(height-1)));
+            c2 = getColor(Scene.getInstance().getTexture().getRGB((int) two.getTexture().getU() * (width-1),(int) two.getTexture().getV()*(height-1)));
+            c3 = getColor(Scene.getInstance().getTexture().getRGB((int) three.getTexture().getU() * (width-1),(int) three.getTexture().getV()*(height-1)));
+        }
         double xleft = (x3-x1)/(y3-y1);
         double xright = (x3-x2)/(y3-y2);
         double red_l = ((c3.getRed() - c1.getRed())/(y3-y1));
@@ -360,7 +374,6 @@ public class Obj extends JPanel implements KeyListener {
             double vr = two.getTexture().getV() + k * (three.getTexture().getV()  - two.getTexture().getV());
 
             line(xs,xe,y,rs,gs,bs,re,ge,be,zl,zr,ul,ur,vl,vr,g2d);
-//            line(xs,xe,y,zl,zr,ul,ur,vl,vr,g2d);
 
             xs += xleft;
             xe += xright;
@@ -402,7 +415,6 @@ public class Obj extends JPanel implements KeyListener {
             v = (v > 1.0) ? 1.0 : Math.max(v, 0.0);
             u = (u > 1.0) ? 1.0 : Math.max(u, 0.0);
 
-            ;
             int c = 0;
             try {
                 c = Scene.getInstance().getTexture().getRGB((int) ((textwidth-1) * u), (int) ((textheight - 1) * v));
@@ -468,8 +480,12 @@ public class Obj extends JPanel implements KeyListener {
                 green = (int) (c1.getGreen() + t * (Math.abs(c1.getGreen() - c2.getGreen())));
             }
 
-            g.setColor(new Color(red,blue,green));
+            red  = red < 0? 0 : Math.min(red, 255);
+            blue  = blue < 0? 0 : Math.min(blue, 255);
+            green  = green < 0? 0 : Math.min(green, 255);
 
+
+            g.setColor(new Color(red,blue,green));
             g.drawLine((int) ((int) x+0.5), (int) ((int)y+0.5), (int) ((int) x+0.5), (int) ((int)y+0.5));
             x += increx;
             y += increy;

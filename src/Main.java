@@ -34,6 +34,17 @@ public class Main {
         v7.setMaterial(new Material(0.2,0.4,0.6,2));
         v8.setMaterial(new Material(0.2,0.4,0.6,2));
 
+//        v1.setColor(Color.red);
+//        v2.setColor(Color.green);
+//        v3.setColor(Color.blue);
+//        v4.setColor(Color.red);
+//        v5.setColor(Color.green);
+//        v6.setColor(Color.blue);
+//        v7.setColor(Color.red);
+//        v8.setColor(Color.green);
+
+
+
         v1.setTexture(new TextureCoord(1,0));
         v2.setTexture(new TextureCoord(0, 1));
         v3.setTexture(new TextureCoord(0,0));
