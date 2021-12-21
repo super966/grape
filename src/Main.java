@@ -33,14 +33,6 @@ public class Main {
         v6.setMaterial(new Material(0.2,0.4,0.6,2));
         v7.setMaterial(new Material(0.2,0.4,0.6,2));
         v8.setMaterial(new Material(0.2,0.4,0.6,2));
-        v1.setColor(Color.red);
-        v2.setColor(Color.blue);
-        v3.setColor(Color.green);
-        v4.setColor(Color.green);
-        v5.setColor(Color.red);
-        v6.setColor(Color.blue);
-        v7.setColor(Color.green);
-        v8.setColor(Color.green);
 
         v1.setTexture(new TextureCoord(1,0));
         v2.setTexture(new TextureCoord(0, 1));
@@ -55,7 +47,9 @@ public class Main {
         obj.addtri(
                 new Triangle(points)
         );
-        points[2] = v4;
+        points[0] = v1;
+        points[1] = v4;
+        points[2] = v2;
         obj.addtri(
                 new Triangle(points)
         );
@@ -74,12 +68,14 @@ public class Main {
         obj.addtri(
                 new Triangle(points)
         );
-        points[2] = v8;
+        points[0] = v4;
+        points[1] = v8;
+        points[2] = v6;
         obj.addtri(
                 new Triangle(points)
         );
-
-        //正方体右侧
+//
+//        //正方体右侧
         v1.setNormal(new Vector4d(1,0,0,0));
         v4.setNormal(new Vector4d(1,0,0,0));
         v5.setNormal(new Vector4d(1,0,0,0));
@@ -94,12 +90,14 @@ public class Main {
         obj.addtri(
                 new Triangle(points)
         );
-        points[2] = v8;
+        points[0] = v5;
+        points[1] = v8;
+        points[2] = v4;
         obj.addtri(
                 new Triangle(points)
         );
 
-//        //正方体底面
+        //正方体底面
         v1.setNormal(new Vector4d(0,-1,0,0));
         v3.setNormal(new Vector4d(0,-1,0,0));
         v5.setNormal(new Vector4d(0,-1,0,0));
@@ -108,18 +106,20 @@ public class Main {
         v3.setTexture(new TextureCoord(0, 1));
         v5.setTexture(new TextureCoord(1,0));
         v7.setTexture(new TextureCoord(0,0 ));
-        points[0] = v3;
-        points[1] = v5;
+        points[0] = v5;
+        points[1] = v3;
         points[2] = v7;
         obj.addtri(
                 new Triangle(points)
         );
-        points[2] = v1;
+        points[0] = v5;
+        points[1] = v1;
+        points[2] = v3;
         obj.addtri(
                 new Triangle(points)
         );
-
-        //左侧
+//
+//        //左侧
         v2.setNormal(new Vector4d(-1,0,0,0));
         v3.setNormal(new Vector4d(-1,0,0,0));
         v6.setNormal(new Vector4d(-1,0,0,0));
@@ -134,12 +134,14 @@ public class Main {
         obj.addtri(
                 new Triangle(points)
         );
-        points[2] = v2;
+        points[0] = v3;
+        points[1] = v2;
+        points[2] = v6;
         obj.addtri(
                 new Triangle(points)
         );
-
-        //后侧
+//
+//        //后侧
         v5.setNormal(new Vector4d(0,0,1,0));
         v6.setNormal(new Vector4d(0,0,1,0));
         v7.setNormal(new Vector4d(0,0,1,0));
@@ -154,7 +156,9 @@ public class Main {
         obj.addtri(
                 new Triangle(points)
         );
-        points[2] = v6;
+        points[0] = v7;
+        points[1] = v6;
+        points[2] = v8;
         obj.addtri(
                 new Triangle(points)
         );
@@ -165,7 +169,7 @@ public class Main {
 
         Camera cam = new Camera(campos,camup,camright,60,1,0,5);
 
-        AmbtLight ambtLight = new AmbtLight(254,67,101);
+        AmbtLight ambtLight = new AmbtLight(255,244,214);
         PointLight pointLight = new PointLight(255,255,255, new Vector4d(0,0,1,0));
 
         ViewPoint viewPoint = new ViewPoint(0,0,1500,850,0,2);

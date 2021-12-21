@@ -14,7 +14,7 @@ public class Vertex implements Cloneable {
     private Vector4d normal;
     private Material material;
     private TextureCoord texture = new TextureCoord(0,0);
-    private Color color;
+    private Color color ;
     private double z_deep;
     private byte bpos = 0;
 

@@ -42,7 +42,7 @@ public class Triangle{
         Vector4d campos =Scene.getInstance().getCamera().getPos();
         Vector4d V = campos.minus(ver.getPos());
         V.Normalize();
-        Vector4d H = L.add(V).div(2);
+        Vector4d H = (L.add(V)).div(2);
         H.Normalize();
 
         int Ir, Ib, Ig;
@@ -55,7 +55,7 @@ public class Triangle{
         Ir = Ir > 255?255: Math.max(Ir, 0);
         Ig = (int) (m.getKa() * ambtLight.getG() + pointLight.getG() * K);
         Ig = Ig > 255?255: Math.max(Ig, 0);
-        Ib = (int) (m.getKa() * ambtLight.getR() + pointLight.getB() * K);
+        Ib = (int) (m.getKa() * ambtLight.getB() + pointLight.getB() * K);
         Ib = Ib > 255?255: Math.max(Ib, 0);
 
         return new Color(Ir,Ig,Ib);
@@ -1119,16 +1119,20 @@ public class Triangle{
         cutf(teTri,lt);
 
 
+        Vertex[] vtemp = new Vertex[3];
         for (Triangle triangle : lt) {
-            for (Vertex vertex : triangle.point) {
+            vtemp[0] = triangle.point[0];
+            vtemp[1] = triangle.point[1];
+            vtemp[2] = triangle.point[2];
+            for (Vertex vertex : vtemp) {
                 vertex.divideW();
             }
 
             Vector4d camDir = new Vector4d(0,0,1,0);
-            Vector4d N1 = triangle.point[1].getPos().minus(triangle.point[0].getPos());
-            Vector4d N2 = triangle.point[2].getPos().minus(triangle.point[0].getPos());
+            Vector4d N1 = vtemp[1].getPos().minus(vtemp[0].getPos());
+            Vector4d N2 = vtemp[2].getPos().minus(vtemp[0].getPos());
             Vector4d frontNormal = N1.crossMul(N2).Normalize();
-//            if(frontNormal.dot(camDir) < 0) continue;
+            if(frontNormal.dot(camDir) < 0) continue;
 
             for (Vertex vertex : triangle.point) {
                 calpos(vertex);

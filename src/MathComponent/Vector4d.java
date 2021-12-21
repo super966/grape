@@ -58,14 +58,15 @@ public class Vector4d {
     }
 
     public Vector4d minus(Vector4d v){
-        return new Vector4d(x - v.x, y -  v.y, z - v.z,w - v.x);
+        return new Vector4d(x - v.x, y -  v.y, z - v.z,w - v.w);
     }
 
     public Vector4d reverse(){
-        x = -x;
-        y = -y;
-        z = -z;
-        return this;
+        return new Vector4d(
+        -x,
+        -y,
+        -z,
+        w);
     }
 
 

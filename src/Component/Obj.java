@@ -201,11 +201,14 @@ public class Obj extends JPanel implements KeyListener {
         double y1 = one.getPos().getY();
         double y2 = two.getPos().getY();
         double y3 = three.getPos().getY();
-        int height = Scene.getInstance().getTexture().getHeight();
-        int width = Scene.getInstance().getTexture().getWidth();
-        Color c1 = getColor(Scene.getInstance().getTexture().getRGB((int) one.getTexture().getU() * (width-1),(int) one.getTexture().getV()*(height-1)));
-        Color c2 = getColor(Scene.getInstance().getTexture().getRGB((int) two.getTexture().getU() * (width-1),(int) two.getTexture().getV()*(height-1)));
-        Color c3 = getColor(Scene.getInstance().getTexture().getRGB((int) three.getTexture().getU() * (width-1),(int) three.getTexture().getV()*(height-1)));
+        Color c1 = one.getColor();
+        Color c2 = two.getColor();
+        Color c3 = three.getColor();
+//        int height = Scene.getInstance().getTexture().getHeight();
+//        int width = Scene.getInstance().getTexture().getWidth();
+//        Color c1 = getColor(Scene.getInstance().getTexture().getRGB((int) one.getTexture().getU() * (width-1),(int) one.getTexture().getV()*(height-1)));
+//        Color c2 = getColor(Scene.getInstance().getTexture().getRGB((int) two.getTexture().getU() * (width-1),(int) two.getTexture().getV()*(height-1)));
+//        Color c3 = getColor(Scene.getInstance().getTexture().getRGB((int) three.getTexture().getU() * (width-1),(int) three.getTexture().getV()*(height-1)));
 
 
         double xleft = (x3-x1)/(y3-y1);
@@ -302,11 +305,16 @@ public class Obj extends JPanel implements KeyListener {
         double y1 = one.getPos().getY();
         double y2 = two.getPos().getY();
         double y3 = three.getPos().getY();
-        int height = Scene.getInstance().getTexture().getHeight();
-        int width = Scene.getInstance().getTexture().getWidth();
-        Color c1 = getColor(Scene.getInstance().getTexture().getRGB((int) one.getTexture().getU() * (width-1),(int) one.getTexture().getV()*(height-1)));
-        Color c2 = getColor(Scene.getInstance().getTexture().getRGB((int) two.getTexture().getU() * (width-1),(int) two.getTexture().getV()*(height-1)));
-        Color c3 = getColor(Scene.getInstance().getTexture().getRGB((int) three.getTexture().getU() * (width-1),(int) three.getTexture().getV()*(height-1)));
+
+        Color c1 = one.getColor();
+        Color c2 = two.getColor();
+        Color c3 = three.getColor();
+
+//        int height = Scene.getInstance().getTexture().getHeight();
+//        int width = Scene.getInstance().getTexture().getWidth();
+//        Color c1 = getColor(Scene.getInstance().getTexture().getRGB((int) one.getTexture().getU() * (width-1),(int) one.getTexture().getV()*(height-1)));
+//        Color c2 = getColor(Scene.getInstance().getTexture().getRGB((int) two.getTexture().getU() * (width-1),(int) two.getTexture().getV()*(height-1)));
+//        Color c3 = getColor(Scene.getInstance().getTexture().getRGB((int) three.getTexture().getU() * (width-1),(int) three.getTexture().getV()*(height-1)));
 
         double xleft = (x3-x1)/(y3-y1);
         double xright = (x3-x2)/(y3-y2);
@@ -371,9 +379,9 @@ public class Obj extends JPanel implements KeyListener {
         double deltaB = 0.0;
 
         if(Math.abs(xe - xs) > 0.0001f){
-            deltaR = (re - rs) * 1.0 / (xe - xs);
-            deltaG = (ge - gs) * 1.0 / (xe - xs);
-            deltaB = (be - bs) * 1.0 / (xe - xs);
+            deltaR = (re - rs) / (xe - xs);
+            deltaG = (ge - gs) / (xe - xs);
+            deltaB = (be - bs) / (xe - xs);
         }
         int textheight = Scene.getInstance().getTexture().getHeight();
         int textwidth = Scene.getInstance().getTexture().getWidth();
@@ -523,23 +531,23 @@ public class Obj extends JPanel implements KeyListener {
     public void keyPressed(KeyEvent e) {
         Vector4d pos = null;
         if (e.getKeyCode() == KeyEvent.VK_A) {
-            pos = moveRight(1);
+            pos = moveRight(0.1);
         }
         if (e.getKeyCode() == KeyEvent.VK_D) {
-            pos = moveLeft(1);
+            pos = moveLeft(0.1);
         }
 
         if (e.getKeyCode() == KeyEvent.VK_W) {
-            pos = moveUp(1);
+            pos = moveUp(0.1);
         }
         if (e.getKeyCode() == KeyEvent.VK_S) {
-            pos = moveDown(1);
+            pos = moveDown(0.1);
         }
         if (e.getKeyCode() == KeyEvent.VK_Q) {
-            pos = forword(1);
+            pos = forword(0.1);
         }
         if (e.getKeyCode() == KeyEvent.VK_E) {
-            pos = forword(-1);
+            pos = forword(-0.1);
         }
         Vector4d n_up = new Vector4d(Scene.getInstance().getCamera().getUp());
         Vector4d n_right = new Vector4d(Scene.getInstance().getCamera().getRight());
