@@ -205,7 +205,7 @@ public class Main {
         scene.setPointLight(pointLight);
         scene.setViewPoint(viewPoint);
         scene.addObj(obj);
-        File img = new File("src\\box.bmp");
+        File img = new File("src/box.bmp");
         BufferedImage bi = ImageIO.read(img);
         scene.setTexture(bi);
 
@@ -254,7 +254,7 @@ public class Main {
 
 //
         JSlider slider = new JSlider(0, 10);
-        slider.setBounds(0,10,100,30);
+        slider.setBounds(10,10,100,30);
 //        slider.setMajorTickSpacing(5);
 //        slider.setMinorTickSpacing(1);
 //        slider.setPaintTicks(true);
@@ -263,7 +263,7 @@ public class Main {
         obj.setSlider(slider);
 
         JSlider slider1 = new JSlider(0, 10);
-        slider1.setBounds(0,40,100,30);
+        slider1.setBounds(10,40,100,30);
 //        slider1.setMajorTickSpacing(5);
 //        slider1.setMinorTickSpacing(1);
 //        slider1.setPaintTicks(true);
@@ -272,7 +272,7 @@ public class Main {
         obj.setSlider1(slider1);
 
         JSlider slider2 = new JSlider(0, 10);
-        slider2.setBounds(100,10,100,30);
+        slider2.setBounds(120,10,100,30);
 //        slider2.setMajorTickSpacing(5);
 //        slider2.setMinorTickSpacing(1);
 //        slider2.setPaintTicks(true);
@@ -281,7 +281,7 @@ public class Main {
         obj.setSlider2(slider2);
 
         JSlider slider3 = new JSlider(0, 10);
-        slider3.setBounds(100,40,100,30);
+        slider3.setBounds(120,40,100,30);
 //        slider3.setMajorTickSpacing(5);
 //        slider3.setMinorTickSpacing(1);
 //        slider3.setPaintTicks(true);
@@ -293,18 +293,27 @@ public class Main {
 //        frame.init();
 
 
-        JTextField Ka =new JTextField("Ka");
-        JTextField Kd =new JTextField("Kd");
-        JTextField Ks =new JTextField("Ks");
-        JTextField n =new JTextField("n");
+        JLabel Ka =new JLabel("Ka");
+        Ka.setBounds(5,15,20,20);
+        JLabel Kd =new JLabel("Kd");
+        Kd.setBounds(5,45,20,20);
 
+        JLabel Ks =new JLabel("Ks");
+        Ks.setBounds(115,15,20,20);
+
+        JLabel n =new JLabel("n");
+        n.setBounds(115,45,20,20);
 
         JPanel panel = new JPanel();
         panel.setLayout(null);
         panel.setBounds(0,0,300,100);
+        panel.add(Ka);
         panel.add(slider);
+        panel.add(Kd);
         panel.add(slider1);
+        panel.add(Ks);
         panel.add(slider2);
+        panel.add(n);
         panel.add(slider3);
 
         JPanel panel1 = new JPanel();
@@ -327,7 +336,7 @@ public class Main {
 //
 //
         frame.add(panel);
-        frame.add(panel1);
+//        frame.add(panel1);
         frame.setSize(1000, 900);
         frame.addKeyListener(obj);
         frame.setVisible(true);
