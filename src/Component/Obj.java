@@ -6,7 +6,11 @@ import MathComponent.Vector4d;
 import MathComponent.Vertex;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -16,19 +20,101 @@ import java.util.List;
  * @author LSY
  * @date 2021/12/09 13:05
  **/
-public class Obj extends JPanel implements KeyListener {
+public class Obj extends JPanel implements KeyListener, ChangeListener, ActionListener {
 
     private List<Triangle> ltri = new ArrayList<>();
     private Matrix worldmatrix;
-    private JPanel jPanel = new JPanel();
+    public JPanel panel = new JPanel(new BorderLayout());
     private Color[][] Frame = new Color[1000][800];
     private double[][] Z_Buffer = new double[1000][800];
     private boolean LINE = false;
+    private boolean LIGHT = false;
 
+    public List<Triangle> getLtri() {
+        return ltri;
+    }
+
+    public void setSlider1(JSlider slider1) {
+        this.slider1 = slider1;
+    }
+
+    private JSlider slider;
+    private JSlider slider1;
+    private JSlider slider2;
+
+    public void setSlider2(JSlider slider2) {
+        this.slider2 = slider2;
+    }
+
+    public void setSlider3(JSlider slider3) {
+        this.slider3 = slider3;
+    }
+
+    private JSlider slider3;
+    private JButton bli;
+    private JButton bw;
+
+    public void setBli(JButton bli) {
+        this.bli = bli;
+    }
+
+    public void setBw(JButton bw) {
+        this.bw = bw;
+    }
+
+    public void setBs(JButton bs) {
+        this.bs = bs;
+    }
+
+    public void setBa(JButton ba) {
+        this.ba = ba;
+    }
+
+    public void setBd(JButton bd) {
+        this.bd = bd;
+    }
+
+    public void setBe(JButton be) {
+        this.be = be;
+    }
+
+    public void setBq(JButton bq) {
+        this.bq = bq;
+    }
+
+    public void setBl(JButton bl) {
+        this.bl = bl;
+    }
+
+    public void setBt(JButton bt) {
+        this.bt = bt;
+    }
+
+    private JButton bs;
+    private JButton ba;
+    private JButton bd;
+    private JButton be;
+    private JButton bq;
+    private JButton bl;
+    private JButton bt;
+
+
+    public void changeLIGHT(){
+        LIGHT = !LIGHT;
+    }
+
+    public void setLINEture() {
+        this.LINE = true;
+    }
+
+    public void setLINEfalse() {
+        this.LINE = false;
+    }
 
     public Obj(){
+
         for (int i = 0; i < Frame.length; i++) {
-            for (int j = 0; j <Frame[i].length; j++) {
+            for (int j = 50; j <Frame[i].length; j++) {
                 Frame[i][j] = Color.white;
                 Z_Buffer[i][j] = Double.MAX_VALUE;
             }
@@ -44,13 +130,21 @@ public class Obj extends JPanel implements KeyListener {
         for (int i = 0; i < ltri.size(); i++) {
 
             Camera c = Scene.getInstance().getCamera();
-            System.out.println(c);
+//            System.out.println(c);
             Triangle t = new Triangle(ltri.get(i));
-            Matrix rotateX = new Matrix().rotateX(0.03);
-            Matrix rotateY = new Matrix().rotateY(0.03);
-            worldmatrix  = worldmatrix.mul(rotateX);
-            worldmatrix = worldmatrix.mul(rotateY);
-            List<Triangle>  temp = t.draw(worldmatrix, c,LINE);
+            if(LINE){
+                Matrix rotateX = new Matrix().rotateX(0.003);
+                Matrix rotateY = new Matrix().rotateY(0.003);
+                worldmatrix  = worldmatrix.mul(rotateX);
+                worldmatrix = worldmatrix.mul(rotateY);
+            }else{
+                Matrix rotateX = new Matrix().rotateX(0.03);
+                Matrix rotateY = new Matrix().rotateY(0.03);
+                worldmatrix  = worldmatrix.mul(rotateX);
+                worldmatrix = worldmatrix.mul(rotateY);
+
+            }
+            List<Triangle>  temp = t.draw(worldmatrix, c, LINE, LIGHT);
             for (int i1 = 0; i1 < temp.size(); i1++) {
 
 
@@ -160,14 +254,12 @@ public class Obj extends JPanel implements KeyListener {
         }
         if(LINE==false){
             for (int i = 0; i < Frame.length; i++) {
-                for (int j = 0; j < Frame[i].length; j++) {
+                for (int j = 10; j < Frame[i].length; j++) {
                     g2d.setColor(Frame[i][j]);
                     g2d.drawLine(i,j,i,j);
                 }
             }
         }
-
-
         removeAll();
         repaint();
         if(LINE == false){
@@ -210,17 +302,10 @@ public class Obj extends JPanel implements KeyListener {
         double y2 = two.getPos().getY();
         double y3 = three.getPos().getY();
         Color c1,c2,c3;
-        if(LINE){
+
             c1 = one.getColor();
             c2 = two.getColor();
             c3 = three.getColor();
-        }else{
-            int height = Scene.getInstance().getTexture().getHeight();
-            int width = Scene.getInstance().getTexture().getWidth();
-            c1 = getColor(Scene.getInstance().getTexture().getRGB((int) one.getTexture().getU() * (width-1),(int) one.getTexture().getV()*(height-1)));
-            c2 = getColor(Scene.getInstance().getTexture().getRGB((int) two.getTexture().getU() * (width-1),(int) two.getTexture().getV()*(height-1)));
-            c3 = getColor(Scene.getInstance().getTexture().getRGB((int) three.getTexture().getU() * (width-1),(int) three.getTexture().getV()*(height-1)));
-        }
 
 
         double xleft = (x3-x1)/(y3-y1);
@@ -281,7 +366,7 @@ public class Obj extends JPanel implements KeyListener {
     }
 
     public Color getColor(int c){
-        int red =  (c>>16 & 0x0000ff) ;
+        int red =   (c>>16 & 0x0000ff);
         int green = (c>>8  & 0x0000ff);
         int blue =  (c     & 0x0000ff);
 
@@ -319,17 +404,10 @@ public class Obj extends JPanel implements KeyListener {
         double y3 = three.getPos().getY();
 
         Color c1,c2,c3;
-        if(LINE){
+
             c1 = one.getColor();
             c2 = two.getColor();
             c3 = three.getColor();
-        }else{
-            int height = Scene.getInstance().getTexture().getHeight();
-            int width = Scene.getInstance().getTexture().getWidth();
-            c1 = getColor(Scene.getInstance().getTexture().getRGB((int) one.getTexture().getU() * (width-1),(int) one.getTexture().getV()*(height-1)));
-            c2 = getColor(Scene.getInstance().getTexture().getRGB((int) two.getTexture().getU() * (width-1),(int) two.getTexture().getV()*(height-1)));
-            c3 = getColor(Scene.getInstance().getTexture().getRGB((int) three.getTexture().getU() * (width-1),(int) three.getTexture().getV()*(height-1)));
-        }
         double xleft = (x3-x1)/(y3-y1);
         double xright = (x3-x2)/(y3-y2);
         double red_l = ((c3.getRed() - c1.getRed())/(y3-y1));
@@ -439,8 +517,6 @@ public class Obj extends JPanel implements KeyListener {
                 Frame[xn][(int) y]= color;
             }
 
-
-
 //            g2d.setColor(getColor(c));
 //            g2d.drawLine((int) x, (int) y, (int) x, (int) y);
             rs += deltaR;
@@ -483,7 +559,6 @@ public class Obj extends JPanel implements KeyListener {
             red  = red < 0? 0 : Math.min(red, 255);
             blue  = blue < 0? 0 : Math.min(blue, 255);
             green  = green < 0? 0 : Math.min(green, 255);
-
 
             g.setColor(new Color(red,blue,green));
             g.drawLine((int) ((int) x+0.5), (int) ((int)y+0.5), (int) ((int) x+0.5), (int) ((int)y+0.5));
@@ -543,37 +618,109 @@ public class Obj extends JPanel implements KeyListener {
 
     }
 
+    public void setSlider(JSlider slider) {
+        this.slider = slider;
+    }
+
     @Override
     public void keyPressed(KeyEvent e) {
-        Vector4d pos = null;
-        if (e.getKeyCode() == KeyEvent.VK_A) {
-            pos = moveRight(0.1);
-        }
-        if (e.getKeyCode() == KeyEvent.VK_D) {
-            pos = moveLeft(0.1);
+
+        if(e.getKeyCode() == KeyEvent.VK_L || e.getKeyCode() == KeyEvent.VK_T || e.getKeyCode() == KeyEvent.VK_P){
+            if (e.getKeyCode() == KeyEvent.VK_L) {
+                this.setLINEture();
+            }
+            if(e.getKeyCode() == KeyEvent.VK_P) {
+                changeLIGHT();
+            }
+            if (e.getKeyCode() == KeyEvent.VK_T) {
+                this.setLINEfalse();
+            }
+        }else {
+
+            Vector4d pos = null;
+            if (e.getKeyCode() == KeyEvent.VK_A) {
+                pos = moveRight(0.1);
+            }
+            if (e.getKeyCode() == KeyEvent.VK_D) {
+                pos = moveLeft(0.1);
+            }
+
+            if (e.getKeyCode() == KeyEvent.VK_W) {
+                pos = moveUp(0.1);
+            }
+            if (e.getKeyCode() == KeyEvent.VK_S) {
+                pos = moveDown(0.1);
+            }
+            if (e.getKeyCode() == KeyEvent.VK_Q) {
+                pos = forword(0.1);
+            }
+            if (e.getKeyCode() == KeyEvent.VK_E) {
+                pos = forword(-0.1);
+            }
+            Vector4d n_up = new Vector4d(Scene.getInstance().getCamera().getUp());
+            Vector4d n_right = new Vector4d(Scene.getInstance().getCamera().getRight());
+            Matrix n_viewTransform = new Matrix().viewTrans(pos, n_up, n_right);
+            Scene.getInstance().getCamera().setPos(pos);
+            Scene.getInstance().getCamera().setViewTransform(n_viewTransform);
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_W) {
-            pos = moveUp(0.1);
-        }
-        if (e.getKeyCode() == KeyEvent.VK_S) {
-            pos = moveDown(0.1);
-        }
-        if (e.getKeyCode() == KeyEvent.VK_Q) {
-            pos = forword(0.1);
-        }
-        if (e.getKeyCode() == KeyEvent.VK_E) {
-            pos = forword(-0.1);
-        }
-        Vector4d n_up = new Vector4d(Scene.getInstance().getCamera().getUp());
-        Vector4d n_right = new Vector4d(Scene.getInstance().getCamera().getRight());
-        Matrix n_viewTransform = new Matrix().viewTrans(pos,n_up,n_right);
-        Scene.getInstance().getCamera().setPos(pos);
-        Scene.getInstance().getCamera().setViewTransform(n_viewTransform);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
 
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        List<Obj> obj = Scene.getInstance().getObj();
+        for (int i = 0; i < obj.size(); i++) {
+            List<Triangle> ltri = obj.get(i).getLtri();
+            Material new_mat = new Material(slider.getValue(),slider1.getValue(),slider2.getValue(),slider3.getValue());
+            for (int i1 = 0; i1 < ltri.size(); i1++) {
+                ltri.get(i1).point[0].setMaterial(new_mat);
+            }
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
+        if(source == bl || source == bt || source == bli){
+            if(source == bt){
+                this.setLINEfalse();
+            }
+            if(source == bl){
+                this.setLINEture();
+            }
+            if (source == bli) {
+                changeLIGHT();
+            }
+        }else {
+            Vector4d pos = null;
+            if (source == bw) {
+                pos = moveUp(0.1);
+            }
+            if (source == ba) {
+                pos = moveRight(0.1);
+            }
+            if (source == bs) {
+                pos = moveDown(0.1);
+            }
+            if (source == bd) {
+                pos = moveLeft(0.1);
+            }
+            if (source == bq) {
+                pos = forword(0.1);
+            }
+            if (source == be) {
+                pos = forword(-0.1);
+            }
+            Vector4d n_up = new Vector4d(Scene.getInstance().getCamera().getUp());
+            Vector4d n_right = new Vector4d(Scene.getInstance().getCamera().getRight());
+            Matrix n_viewTransform = new Matrix().viewTrans(pos, n_up, n_right);
+            Scene.getInstance().getCamera().setPos(pos);
+            Scene.getInstance().getCamera().setViewTransform(n_viewTransform);
+        }
     }
 }

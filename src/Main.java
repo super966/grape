@@ -5,7 +5,13 @@ import MathComponent.Vertex;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -34,16 +40,14 @@ public class Main {
         v7.setMaterial(new Material(0.2,0.4,0.6,2));
         v8.setMaterial(new Material(0.2,0.4,0.6,2));
 
-//        v1.setColor(Color.red);
-//        v2.setColor(Color.green);
-//        v3.setColor(Color.blue);
-//        v4.setColor(Color.red);
-//        v5.setColor(Color.green);
-//        v6.setColor(Color.blue);
-//        v7.setColor(Color.red);
-//        v8.setColor(Color.green);
-
-
+        v1.setColor(Color.red);
+        v2.setColor(Color.green);
+        v3.setColor(Color.blue);
+        v4.setColor(Color.red);
+        v5.setColor(Color.green);
+        v6.setColor(Color.blue);
+        v7.setColor(Color.red);
+        v8.setColor(Color.green);
 
         v1.setTexture(new TextureCoord(1,0));
         v2.setTexture(new TextureCoord(0, 1));
@@ -185,7 +189,7 @@ public class Main {
 
         ViewPoint viewPoint = new ViewPoint(0,0,1500,850,0,2);
 
-        Vector4d objPos = new Vector4d(1,0,0,1);
+        Vector4d objPos = new Vector4d(-2,0,0,1);
         Vector4d scale = new Vector4d(1,1,1,1);
         double xdeg = 0;
         double ydeg = 0;
@@ -193,7 +197,7 @@ public class Main {
 
         Matrix worldMatrix = new Matrix().worldTransform(objPos,scale,xdeg,ydeg,zdeg);
         obj.setWorldmatrix(worldMatrix);
-
+        obj.setBounds(0, 70, 1000, 800);
 
         Scene scene = Scene.getInstance();
         scene.setCamera(cam);
@@ -205,21 +209,125 @@ public class Main {
         BufferedImage bi = ImageIO.read(img);
         scene.setTexture(bi);
 
-        JFrame frame = new JFrame("Scene");
+//        Bg frame = new Bg("Scene");
+//        frame.setObj(obj);
 
-        frame.setSize(1000, 800);
+
+
+        JFrame frame = new JFrame("Scene");
+        JButton bli = new JButton("光照模式转换");
+        JButton bw = new JButton("w");
+        JButton bs = new JButton("s");
+        JButton ba = new JButton("a");
+        JButton bd = new JButton("d");
+        JButton bq = new JButton("q");
+        JButton be = new JButton("e");
+        JButton bl = new JButton("线框模式");
+        JButton bt = new JButton("纹理模式");
+        obj.setBli(bli);
+        bli.addActionListener(obj);
+        bli.setBounds(550,0,120,30);
+        obj.setBw(bw);
+        bw.addActionListener(obj);
+        bw.setBounds(400,0,50,30);
+        obj.setBs(bs);
+        bs.addActionListener(obj);
+        bs.setBounds(400,30,50,30);
+        obj.setBa(ba);
+        ba.addActionListener(obj);
+        ba.setBounds(350,30,50,30);
+        obj.setBd(bd);
+        bd.addActionListener(obj);
+        bd.setBounds(450,30,50,30);
+        obj.setBq(bq);
+        bq.addActionListener(obj);
+        bq.setBounds(350,0,50,30);
+        obj.setBe(be);
+        be.addActionListener(obj);
+        be.setBounds(450,0,50,30);
+        obj.setBl(bl);
+        bl.addActionListener(obj);
+        bl.setBounds(550,30,120,30);
+        obj.setBt(bt);
+        bt.addActionListener(obj);
+        bt.setBounds(700,30,120,30);
+
+//
+        JSlider slider = new JSlider(0, 10);
+        slider.setBounds(0,10,100,30);
+//        slider.setMajorTickSpacing(5);
+//        slider.setMinorTickSpacing(1);
+//        slider.setPaintTicks(true);
+//        slider.setPaintLabels(true);
+        slider.addChangeListener(obj);
+        obj.setSlider(slider);
+
+        JSlider slider1 = new JSlider(0, 10);
+        slider1.setBounds(0,40,100,30);
+//        slider1.setMajorTickSpacing(5);
+//        slider1.setMinorTickSpacing(1);
+//        slider1.setPaintTicks(true);
+//        slider1.setPaintLabels(true);
+        slider1.addChangeListener(obj);
+        obj.setSlider1(slider1);
+
+        JSlider slider2 = new JSlider(0, 10);
+        slider2.setBounds(100,10,100,30);
+//        slider2.setMajorTickSpacing(5);
+//        slider2.setMinorTickSpacing(1);
+//        slider2.setPaintTicks(true);
+//        slider2.setPaintLabels(true);
+        slider2.addChangeListener(obj);
+        obj.setSlider1(slider2);
+
+        JSlider slider3 = new JSlider(0, 10);
+        slider3.setBounds(100,40,100,30);
+//        slider3.setMajorTickSpacing(5);
+//        slider3.setMinorTickSpacing(1);
+//        slider3.setPaintTicks(true);
+//        slider3.setPaintLabels(true);
+        slider3.addChangeListener(obj);
+        obj.setSlider1(slider3);
+//        frame.setSlider(slider);
+//        frame.setButton(b1);
+//        frame.init();
+
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBounds(0,0,500,50);
+        panel.add(slider);
+        panel.add(slider1);
+        panel.add(slider2);
+        panel.add(slider3);
+
+        JPanel panel1 = new JPanel();
+        panel1.setLayout(null);
+        panel1.setBounds(550,0,120,100);
+        panel1.add(bli);
+        panel1.add(bw);
+        panel1.add(ba);
+        panel1.add(bs);
+        panel1.add(bd);
+        panel1.add(be);
+        panel1.add(bq);
+        panel1.add(bt);
+        panel1.add(bl);
+
+        JPanel panel2 = new JPanel();
+        panel1.setLayout(null);
+        panel1.setBounds(0,10,1220,890);
+        panel1.add(obj);
+//
+//
+        frame.add(panel);
+        frame.add(panel1);
+        frame.setSize(1000, 900);
+        frame.addKeyListener(obj);
+        frame.setVisible(true);
         frame.setLayout(null);
         frame.setLocationRelativeTo(null);
-        obj.setBounds(0, 0, 1000, 800);
-        frame.setVisible(true);
-//        obj.setBackground(Color.black);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-
-//        for (int i = 0; i < Scene.getInstance().getObj().size(); i++) {
-        frame.addKeyListener(obj);
-        frame.add(obj);
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
 

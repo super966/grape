@@ -1087,7 +1087,7 @@ public class Triangle{
 
 
 
-    public List<Triangle>  draw(Matrix worldMatrix, Camera c, boolean LINE) {
+    public List<Triangle>  draw(Matrix worldMatrix, Camera c, boolean LINE, boolean LIGHT) {
         List<Triangle> picTri = new ArrayList<>();
         Scene scene = Scene.getInstance();
         Camera camera = c;
@@ -1104,11 +1104,15 @@ public class Triangle{
         Vertex[] temp = new Vertex[3];
         for (int i = 0; i < temp.length; i++) {
             temp[i] = point[i];
+
             temp[i].matrixMul(worldMatrix);
             if(LINE){
                 temp[i].setColor((temp[i]).getColor());
             }else{
-                temp[i].setColor(lightModel(temp[i]));
+                temp[i].setColor(Color.white);
+                if(LIGHT == true){
+                    temp[i].setColor(lightModel(temp[i]));
+                }
             }
 //
             temp[i].matrixMul(viewTransMatrix);

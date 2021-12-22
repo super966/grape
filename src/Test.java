@@ -2,6 +2,8 @@ import MathComponent.Matrix;
 import MathComponent.Vector4d;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -20,9 +22,34 @@ public class Test extends JPanel implements KeyListener {
         frame.setSize( 800, 600);
         frame.setLayout(null);
         this.setBounds(0, 0, 800, 700);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-        this.setBackground(Color.GREEN);
+
+        frame.setSize( 800, 600);
+        frame.setLayout(null);
+
+        final JSlider slider = new JSlider(0, 20, 10);
+
+        // 设置主刻度间隔
+        slider.setMajorTickSpacing(5);
+
+        // 设置次刻度间隔
+        slider.setMinorTickSpacing(1);
+
+        // 绘制 刻度 和 标签
+        slider.setPaintTicks(true);
+        slider.setPaintLabels(true);
+
+
+        // 添加刻度改变监听器
+        slider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                System.out.println("当前值: " + slider.getValue());
+            }
+        });
+
+        // 添加滑块到内容面板
+        this.add(slider);
+
         frame.addKeyListener(this);
         frame.add(this);
 
@@ -50,12 +77,7 @@ public class Test extends JPanel implements KeyListener {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        for (int i = 0; i < Scene.length; i++) {
-            for (int j = 0; j < Scene[i].length; j++) {
-                g2d.setColor(Scene[i][j]);
-                g2d.drawLine(i,j,i,j);
-            }
-        }
+
         repaint();
     }
 
