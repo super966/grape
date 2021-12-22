@@ -278,7 +278,7 @@ public class Main {
 //        slider2.setPaintTicks(true);
 //        slider2.setPaintLabels(true);
         slider2.addChangeListener(obj);
-        obj.setSlider1(slider2);
+        obj.setSlider2(slider2);
 
         JSlider slider3 = new JSlider(0, 10);
         slider3.setBounds(100,40,100,30);
@@ -287,14 +287,14 @@ public class Main {
 //        slider3.setPaintTicks(true);
 //        slider3.setPaintLabels(true);
         slider3.addChangeListener(obj);
-        obj.setSlider1(slider3);
+        obj.setSlider3(slider3);
 //        frame.setSlider(slider);
 //        frame.setButton(b1);
 //        frame.init();
 
         JPanel panel = new JPanel();
         panel.setLayout(null);
-        panel.setBounds(0,0,500,50);
+        panel.setBounds(0,0,300,100);
         panel.add(slider);
         panel.add(slider1);
         panel.add(slider2);
@@ -315,7 +315,7 @@ public class Main {
 
         JPanel panel2 = new JPanel();
         panel1.setLayout(null);
-        panel1.setBounds(0,10,1220,890);
+        panel1.setBounds(0,0,1220,890);
         panel1.add(obj);
 //
 //
