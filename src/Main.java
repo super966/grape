@@ -292,6 +292,13 @@ public class Main {
 //        frame.setButton(b1);
 //        frame.init();
 
+
+        JTextField Ka =new JTextField("Ka");
+        JTextField Kd =new JTextField("Kd");
+        JTextField Ks =new JTextField("Ks");
+        JTextField n =new JTextField("n");
+
+
         JPanel panel = new JPanel();
         panel.setLayout(null);
         panel.setBounds(0,0,300,100);
