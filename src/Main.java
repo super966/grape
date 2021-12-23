@@ -253,8 +253,8 @@ public class Main {
         bt.setBounds(700,30,120,30);
 
 //
-        JSlider slider = new JSlider(0, 10);
-        slider.setBounds(10,10,100,30);
+        JSlider slider = new JSlider(0, 10,2);
+        slider.setBounds(18,10,100,30);
 //        slider.setMajorTickSpacing(5);
 //        slider.setMinorTickSpacing(1);
 //        slider.setPaintTicks(true);
@@ -262,8 +262,8 @@ public class Main {
         slider.addChangeListener(obj);
         obj.setSlider(slider);
 
-        JSlider slider1 = new JSlider(0, 10);
-        slider1.setBounds(10,40,100,30);
+        JSlider slider1 = new JSlider(0, 10,4);
+        slider1.setBounds(18,40,100,30);
 //        slider1.setMajorTickSpacing(5);
 //        slider1.setMinorTickSpacing(1);
 //        slider1.setPaintTicks(true);
@@ -271,8 +271,8 @@ public class Main {
         slider1.addChangeListener(obj);
         obj.setSlider1(slider1);
 
-        JSlider slider2 = new JSlider(0, 10);
-        slider2.setBounds(120,10,100,30);
+        JSlider slider2 = new JSlider(0, 10,6);
+        slider2.setBounds(133,10,100,30);
 //        slider2.setMajorTickSpacing(5);
 //        slider2.setMinorTickSpacing(1);
 //        slider2.setPaintTicks(true);
@@ -280,8 +280,8 @@ public class Main {
         slider2.addChangeListener(obj);
         obj.setSlider2(slider2);
 
-        JSlider slider3 = new JSlider(0, 10);
-        slider3.setBounds(120,40,100,30);
+        JSlider slider3 = new JSlider(0, 10,2);
+        slider3.setBounds(133,40,100,30);
 //        slider3.setMajorTickSpacing(5);
 //        slider3.setMinorTickSpacing(1);
 //        slider3.setPaintTicks(true);
@@ -299,10 +299,10 @@ public class Main {
         Kd.setBounds(5,45,20,20);
 
         JLabel Ks =new JLabel("Ks");
-        Ks.setBounds(115,15,20,20);
+        Ks.setBounds(118,15,20,20);
 
         JLabel n =new JLabel("n");
-        n.setBounds(115,45,20,20);
+        n.setBounds(118,45,20,20);
 
         JPanel panel = new JPanel();
         panel.setLayout(null);
@@ -336,7 +336,7 @@ public class Main {
 //
 //
         frame.add(panel);
-//        frame.add(panel1);
+        frame.add(panel1);
         frame.setSize(1000, 900);
         frame.addKeyListener(obj);
         frame.setVisible(true);

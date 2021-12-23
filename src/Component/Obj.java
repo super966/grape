@@ -676,16 +676,22 @@ public class Obj extends JPanel implements KeyListener, ChangeListener, ActionLi
         List<Obj> obj = Scene.getInstance().getObj();
         for (int i = 0; i < obj.size(); i++) {
             List<Triangle> ltri = obj.get(i).getLtri();
-            Material new_mat = new Material(slider.getValue(),slider1.getValue(),slider2.getValue(),slider3.getValue());
-            System.out.println(slider.getValue()+" " +
-                                slider1.getValue() + " "
-                                + slider2.getValue() + " "
-                                + slider3.getValue());
-//            for (int i1 = 0; i1 < ltri.size(); i1++) {
-//                ltri.get(i1).point[0].setMaterial(new_mat);
-//                ltri.get(i1).point[1].setMaterial(new_mat);
-//                ltri.get(i1).point[2].setMaterial(new_mat);
-//            }
+            double ka = slider.getValue() / 10.0;
+
+
+            double kd = slider1.getValue() / 10.0;
+            double ks = slider2.getValue() / 10.0;
+            int n = slider3.getValue();
+            Material new_mat = new Material(ka, kd, ks, n);
+            System.out.println(ka+" " +
+                                kd + " "
+                                + ks + " "
+                                + n);
+            for (int i1 = 0; i1 < ltri.size(); i1++) {
+                ltri.get(i1).point[0].setMaterial(new_mat);
+                ltri.get(i1).point[1].setMaterial(new_mat);
+                ltri.get(i1).point[2].setMaterial(new_mat);
+            }
         }
     }
 
