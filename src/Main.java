@@ -185,11 +185,11 @@ public class Main {
         Camera cam = new Camera(campos,camup,camright,60,1,0,5);
 
         AmbtLight ambtLight = new AmbtLight(255,244,214);
-        PointLight pointLight = new PointLight(255,255,255, new Vector4d(0,0,1,0));
+        PointLight pointLight = new PointLight(255,255,255, new Vector4d(-3,-3,2,0));
 
         ViewPoint viewPoint = new ViewPoint(0,0,1500,850,0,2);
 
-        Vector4d objPos = new Vector4d(-2,0,0,1);
+        Vector4d objPos = new Vector4d(-2,-2,2,1);
         Vector4d scale = new Vector4d(1,1,1,1);
         double xdeg = 0;
         double ydeg = 0;

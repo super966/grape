@@ -255,8 +255,16 @@ public class Obj extends JPanel implements KeyListener, ChangeListener, ActionLi
         if(LINE==false){
             for (int i = 0; i < Frame.length; i++) {
                 for (int j = 10; j < Frame[i].length; j++) {
-                    g2d.setColor(Frame[i][j]);
-                    g2d.drawLine(i,j,i,j);
+                    if(Frame[i][j-1] != Color.white && Frame[i][j+1] != Color.white && Frame[i][j] == Color.white){
+                        g2d.setColor(Frame[i][j-1]);
+                        g2d.drawLine(i,j,i,j);
+                    } else if(i > 1 && i < 999 && Frame[i-1][j] != Color.white && Frame[i+1][j] != Color.white && Frame[i][j] == Color.white){
+                        g2d.setColor(Frame[i][j-1]);
+                        g2d.drawLine(i,j,i,j);
+                    }else{
+                        g2d.setColor(Frame[i][j]);
+                        g2d.drawLine(i,j,i,j);
+                    }
                 }
             }
         }
@@ -478,6 +486,7 @@ public class Obj extends JPanel implements KeyListener, ChangeListener, ActionLi
         int textwidth = Scene.getInstance().getTexture().getWidth();
         double x = 0;
         for( x = xs;x < xe;x++){
+
             double fac_x = (x - xs)/(xe - xs);
             double new_z = 0.0;
             double fac_t = fac_x;
@@ -516,7 +525,12 @@ public class Obj extends JPanel implements KeyListener, ChangeListener, ActionLi
                 Z_Buffer[xn][(int) y] = new_z;
                 Frame[xn][(int) y]= color;
             }
-
+            if(x == xs) {
+                Frame[xn - 1][(int) y] = color;
+            }
+            if(x == xe) {
+                Frame[xn + 1][(int) y] = color;
+            }
 //            g2d.setColor(getColor(c));
 //            g2d.drawLine((int) x, (int) y, (int) x, (int) y);
             rs += deltaR;
