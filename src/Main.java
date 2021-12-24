@@ -189,7 +189,7 @@ public class Main {
 
         ViewPoint viewPoint = new ViewPoint(0,0,1500,850,0,2);
 
-        Vector4d objPos = new Vector4d(-2,-2,2,1);
+        Vector4d objPos = new Vector4d(-2,0,0,1);
         Vector4d scale = new Vector4d(1,1,1,1);
         double xdeg = 0;
         double ydeg = 0;
@@ -205,7 +205,7 @@ public class Main {
         scene.setPointLight(pointLight);
         scene.setViewPoint(viewPoint);
         scene.addObj(obj);
-        File img = new File("src/box.bmp");
+        File img = new File("src/wall.bmp");
         BufferedImage bi = ImageIO.read(img);
         scene.setTexture(bi);
 
